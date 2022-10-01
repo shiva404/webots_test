@@ -2,7 +2,7 @@
 
 # You may need to import some classes of the controller module. Ex:
 #  from controller import Robot, Motor, DistanceSensor
-from controller import Robot, Keyboard
+from controller import Robot, Keyboard, GPS
 
 TIME_STEP = 64
 robot = Robot()
@@ -23,7 +23,9 @@ keyboard = Keyboard()
 keyboard.enable(TIME_STEP)
 leftSpeed = 0.0
 rightSpeed = 0.0
- 
+
+gp = robot.getGPS("global")
+gp.enable(TIME_STEP)
 # Main loop:
 # - perform simulation steps until Webots is stopping the controller
 while robot.step(TIME_STEP) != -1:
@@ -45,9 +47,11 @@ while robot.step(TIME_STEP) != -1:
         leftSpeed = 0.0
         rightSpeed=0.0
     
-    print(f"Reading from right_sensor={ds[0].getValue()} lef_sensor={ds[1].getValue()} ")
-    
+    print(f"Reading from right_sensor={ds[0].getValue()} lef_sensor={ds[1].getValue()}")
+    print(f"gps X={gp.getValues()[0]} Y={gp.getValues()[1]} Z={gp.getValues()[2]}")
     wheels[0].setVelocity(leftSpeed)
     wheels[1].setVelocity(rightSpeed)
     wheels[2].setVelocity(leftSpeed)
     wheels[3].setVelocity(rightSpeed)
+    
+ 
